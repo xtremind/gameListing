@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-
+import { Observable, of } from 'rxjs';
 import { Game } from '../domain/game';
 
 export const GAMES: Game[] = [
@@ -16,7 +16,7 @@ export class GameService {
 
   constructor() { }
 
-  getGames(): Game[] {
-    return GAMES;
+  getGames(): Observable<Game[]> {
+    return of(GAMES);
   }
 }
