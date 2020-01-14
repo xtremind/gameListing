@@ -1,0 +1,17 @@
+@startuml
+object Person
+object Builder
+object Console
+object Copy
+object Devloper
+object Game
+object Support
+
+
+Person -> Copy : own
+Person -> Support : own
+Builder -> Console : create
+Console -> "n" Game : support
+Devloper -> "n" Game : develop
+Game -> "n" Support : isDeclined
+@enduml
