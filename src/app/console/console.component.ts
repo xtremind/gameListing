@@ -22,7 +22,7 @@ export class ConsoleComponent implements OnInit {
   }
 
   getGames(): void {
-    this.gameService.getGames().subscribe(games => this.games = games);
+    //this.gameService.getGames().subscribe(games => this.games = games);
   }
 
   onSelect(game: Game): void {
