@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { GameService } from '../game.service';
-import { Console } from '../../domain/console';
-import { Game } from '../../domain/game';
+import { GameService } from '../../../core/services/game/game.service';
+import { Console } from '../../models/console.model';
+import { Game } from '../../models/game.model';
 
 @Component({
   selector: 'app-game',

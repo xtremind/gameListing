@@ -1,4 +1,4 @@
-export class Console {
+export interface Console {
     id: number;
     name: string;
 }  

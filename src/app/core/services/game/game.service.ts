@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Game } from '../domain/game';
+import { Game } from '../../../shared/models/game.model';
 
 export const GAMES: Game[] = [
     { id: 11, name: 'Super Mario Bros', console: 'Nes'},

@@ -25,3 +25,7 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+https://www.reddit.com/r/emulation/comments/830pu6/i_love_retroarchs_systematic_icons_so_made_170/
+https://itnext.io/choosing-a-highly-scalable-folder-structure-in-angular-d987de65ec7?gi=b72e9946cb65
