@@ -19,4 +19,8 @@ export class GameService {
   getGames(console): Observable<Game[]> {
     return of(GAMES.filter(game => game.console === console));
   }
+
+  getGame(id): Observable<Game> {
+    return of(GAMES.find(game => game.id === id));
+  }
 }
