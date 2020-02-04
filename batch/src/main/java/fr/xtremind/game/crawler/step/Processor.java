@@ -2,12 +2,14 @@ package fr.xtremind.game.crawler.step;
 
 import org.springframework.batch.item.ItemProcessor;
 
-public class Processor implements ItemProcessor<String, String> {
+import fr.xtremind.game.crawler.domain.Game;
+
+public class Processor implements ItemProcessor<Game, String> {
 
 	@Override
-	public String process(String data) throws Exception {
-		System.out.println("process " + data);
-		return data.toUpperCase();
+	public String process(Game data) throws Exception {
+		//System.out.println("process " + data.toString());
+		return data.toString().toUpperCase();
 	}
 
 }

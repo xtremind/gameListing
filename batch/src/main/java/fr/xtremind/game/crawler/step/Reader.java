@@ -1,36 +1,73 @@
 package fr.xtremind.game.crawler.step;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-public class Reader implements ItemReader<String> {
+import fr.xtremind.game.crawler.domain.GameDTO;
+import fr.xtremind.game.crawler.domain.Game;
 
-	private String[] messages = { "javainuse.com",
-			"Welcome to Spring Batch Example",
-			"We use H2 Database for this example" };
+public class Reader implements ItemReader<Game> {
 
-	private int count = 0;
+    private final String apiUrl;
+	private final RestTemplate restTemplate;
 
+	private int nextGameIndex;
+	private int nextCursor;
+	private List<Game> gameData = new ArrayList<Game>();
+	
 	public Reader(String requiredProperty, RestTemplate restTemplate) {
 		System.out.println("construct " + requiredProperty);
+		this.apiUrl = requiredProperty;
+		this.restTemplate = restTemplate;
 	}
 
 	@Override
-	public String read() throws Exception, UnexpectedInputException,
+	public Game read() throws Exception, UnexpectedInputException,
 			ParseException, NonTransientResourceException {
-
-		String message = null;
-		if (count < messages.length) {
-			message = messages[count++];
-			System.out.println("read " + message);
-			return message;
-		} else {
-			count = 0;
+		
+		if (gameDataIsNotInitialized() || (nextGameIndex == nextCursor)){
+			//gameData = fetchGameDTOFromAPI();
+			gameData.addAll(fetchGameDTOFromAPI());
 		}
-		return message;
+
+		Game game = null;
+
+		/*if(nextGameIndex == nextCursor){
+			gameData.addAll(fetchGameDTOFromAPI());
+		} */
+		
+		if (nextGameIndex < gameData.size()) {
+            game = gameData.get(nextGameIndex);
+            nextGameIndex++;
+			//System.out.println("********* index " + nextGameIndex);
+        }
+ 
+        return game;
+	}
+
+	private boolean gameDataIsNotInitialized(){
+		return this.gameData == null;
+	}
+
+	private List<Game> fetchGameDTOFromAPI(){
+		ResponseEntity<GameDTO> response = restTemplate.getForEntity(
+            apiUrl + this.nextCursor, 
+            GameDTO.class
+        );
+		GameDTO gameDTO = response.getBody();
+		if (gameDTO.getCursor() != null){
+			this.nextCursor = Integer.parseInt(gameDTO.getCursor());
+		} else {
+			this.nextCursor = 0;
+		}
+        return gameDTO.getProducts();
 	}
 
 }

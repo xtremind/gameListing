@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.web.client.RestTemplate;
 
+import fr.xtremind.game.crawler.domain.Game;
 import fr.xtremind.game.crawler.listener.JobCompletionListener;
 import fr.xtremind.game.crawler.step.Processor;
 import fr.xtremind.game.crawler.step.Reader;
@@ -35,12 +36,12 @@ public class GameCrawlerJobConfiguration {
     public StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    ItemReader<String> gameReader(Environment environment, RestTemplate restTemplate) {
+    ItemReader<Game> gameReader(Environment environment, RestTemplate restTemplate) {
         return new Reader(environment.getRequiredProperty(PROPERTY_REST_API_URL), restTemplate);
     }
 
     @Bean
-    ItemProcessor<String, String> gameProcessor() {
+    ItemProcessor<Game, String> gameProcessor() {
         return new Processor();
     }
 
@@ -60,11 +61,11 @@ public class GameCrawlerJobConfiguration {
 	}
 
 	@Bean
-	public Step orderStep1(ItemReader<String> gameReader,
-							ItemProcessor<String, String> gameProcessor,
+	public Step orderStep1(ItemReader<Game> gameReader,
+							ItemProcessor<Game, String> gameProcessor,
 							ItemWriter<String> gameWriter,
 							StepBuilderFactory stepBuilderFactory) {
-		return stepBuilderFactory.get("orderStep1").<String, String> chunk(1)
+		return stepBuilderFactory.get("orderStep1").<Game, String> chunk(1)
 				.reader(gameReader)
 				.processor(gameProcessor)
 				.writer(gameWriter)
