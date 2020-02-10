@@ -1,4 +1,4 @@
-package fr.xtremind.game.crawler.step;
+package fr.xtremind.game.crawler.steps.gamecrawler;
 
 import java.util.List;
 
