@@ -1,73 +1,32 @@
 package fr.xtremind.game.crawler.steps.gamecrawler;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.NonTransientResourceException;
-import org.springframework.batch.item.ParseException;
-import org.springframework.batch.item.UnexpectedInputException;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
-import fr.xtremind.game.crawler.domain.GameDTO;
-import fr.xtremind.game.crawler.domain.Game;
+import fr.xtremind.game.crawler.domain.Console;
 
-public class Reader implements ItemReader<Game> {
 
-    private final String apiUrl;
-	private final RestTemplate restTemplate;
+public class Reader implements ItemReader<Console> {
 
-	private int nextGameIndex;
-	private int nextCursor;
-	private List<Game> gameData = new ArrayList<Game>();
+	private int nextConsoleIndex = 0;
+	private List<Console> consoles = new ArrayList<Console>();
 	
-	public Reader(String requiredProperty, RestTemplate restTemplate) {
+	public Reader(String requiredProperty) {
 		System.out.println("construct " + requiredProperty);
-		this.apiUrl = requiredProperty;
-		this.restTemplate = restTemplate;
+		this.consoles = Arrays.asList(requiredProperty.split(",")).stream().map(s -> convertTo(s)).collect(Collectors.toList());
 	}
 
 	@Override
-	public Game read() throws Exception, UnexpectedInputException,
-			ParseException, NonTransientResourceException {
-		
-		if (gameDataIsNotInitialized() || (nextGameIndex == nextCursor)){
-			//gameData = fetchGameDTOFromAPI();
-			gameData.addAll(fetchGameDTOFromAPI());
-		}
-
-		Game game = null;
-
-		/*if(nextGameIndex == nextCursor){
-			gameData.addAll(fetchGameDTOFromAPI());
-		} */
-		
-		if (nextGameIndex < gameData.size()) {
-            game = gameData.get(nextGameIndex);
-            nextGameIndex++;
-			//System.out.println("********* index " + nextGameIndex);
-        }
- 
-        return game;
+	public Console read() {
+		return nextConsoleIndex < consoles.size() ? consoles.get(nextConsoleIndex++) :  null;
 	}
 
-	private boolean gameDataIsNotInitialized(){
-		return this.gameData == null;
-	}
-
-	private List<Game> fetchGameDTOFromAPI(){
-		ResponseEntity<GameDTO> response = restTemplate.getForEntity(
-            apiUrl + this.nextCursor, 
-            GameDTO.class
-        );
-		GameDTO gameDTO = response.getBody();
-		if (gameDTO.getCursor() != null){
-			this.nextCursor = Integer.parseInt(gameDTO.getCursor());
-		} else {
-			this.nextCursor = 0;
-		}
-        return gameDTO.getProducts();
+	private Console convertTo(String consoleName) {
+		return new Console("pal", consoleName);
 	}
 
 }

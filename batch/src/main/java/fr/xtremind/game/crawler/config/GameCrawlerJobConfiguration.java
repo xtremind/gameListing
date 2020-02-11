@@ -20,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
-import fr.xtremind.game.crawler.domain.Game;
+import fr.xtremind.game.crawler.domain.Console;
 import fr.xtremind.game.crawler.listener.JobCompletionListener;
 
 @Configuration
@@ -28,7 +28,8 @@ import fr.xtremind.game.crawler.listener.JobCompletionListener;
 public class GameCrawlerJobConfiguration {
 
 	private static final String PROPERTY_REST_API_URL = "rest.api.url";
-	
+	private static final String PROPERTY_CONSOLE_LIST = "console.list";
+
 	@Autowired
 	public JobBuilderFactory jobBuilderFactory;
 
@@ -48,35 +49,18 @@ public class GameCrawlerJobConfiguration {
 		return restTemplate;
 	}
 
-
     @Bean
-    ItemReader<Game> consoleReader() {
-        return new fr.xtremind.game.crawler.steps.consoleparser.Reader();
+    ItemReader<Console> gameReader() {
+        return new fr.xtremind.game.crawler.steps.gamecrawler.Reader(environment.getRequiredProperty(PROPERTY_CONSOLE_LIST));
     }
 
     @Bean
-    ItemProcessor<Game, String> consoleProcessor() {
-        return new fr.xtremind.game.crawler.steps.consoleparser.Processor();
+    ItemProcessor<Console, Console> gameProcessor() {
+        return new fr.xtremind.game.crawler.steps.gamecrawler.Processor(environment.getRequiredProperty(PROPERTY_REST_API_URL), restTemplate());
     }
 
     @Bean
-    ItemWriter<String> consoleWriter() {
-        return new fr.xtremind.game.crawler.steps.consoleparser.Writer();
-    }
-
-
-    @Bean
-    ItemReader<Game> gameReader() {
-        return new fr.xtremind.game.crawler.steps.gamecrawler.Reader(environment.getRequiredProperty(PROPERTY_REST_API_URL), restTemplate());
-    }
-
-    @Bean
-    ItemProcessor<Game, String> gameProcessor() {
-        return new fr.xtremind.game.crawler.steps.gamecrawler.Processor();
-    }
-
-    @Bean
-    ItemWriter<String> gameWriter() {
+    ItemWriter<Console> gameWriter() {
         return new fr.xtremind.game.crawler.steps.gamecrawler.Writer();
     }
 
@@ -86,24 +70,13 @@ public class GameCrawlerJobConfiguration {
 				.incrementer(new RunIdIncrementer())
 				.listener(listener())
 				.flow(step1())
-				.next(step2())
 				.end()
 				.build();
 	}
 
-
 	@Bean
 	public Step step1() {
-		return stepBuilderFactory.get("step1").<Game, String> chunk(1)
-				.reader(consoleReader())
-				.processor(consoleProcessor())
-				.writer(consoleWriter())
-				.build();
-	}
-
-	@Bean
-	public Step step2() {
-		return stepBuilderFactory.get("step2").<Game, String> chunk(1)
+		return stepBuilderFactory.get("step1").<Console, Console> chunk(1)
 				.reader(gameReader())
 				.processor(gameProcessor())
 				.writer(gameWriter())

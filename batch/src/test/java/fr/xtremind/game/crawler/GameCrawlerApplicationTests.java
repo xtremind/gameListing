@@ -28,7 +28,7 @@ class GameCrawlerApplicationTests {
 				.toJobParameters();
 		jobLauncher.run(processJob, jobParameters);
 
-		System.out.println("TEST - BATCH JOB COMPLETED SUCCESSFULLY");
+		System.out.println("TEST - BATCH JOB COMPLETED SUCCESSFULLY"); 
 	}
 
 }
