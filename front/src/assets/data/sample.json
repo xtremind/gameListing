@@ -1,0 +1,81 @@
+{"consoles":
+	[{
+	  "version" : "pal",
+	  "name" : "nes",
+	  "games" : [ {
+      "consoleUri" : "pal-nes",
+      "hasProduct" : false,
+      "id" : "38338",
+      "price1" : "$42.78",
+      "price2" : "$268.20",
+      "price3" : "$90.07",
+      "productName" : "Legend of Zelda",
+      "productUri" : "legend-of-zelda",
+      "wishlistHasProduct" : false
+      }, {
+      "consoleUri" : "pal-nes",
+      "hasProduct" : false,
+      "id" : "15976",
+      "price1" : "$550.00",
+      "price2" : "",
+      "price3" : "$950.00",
+      "productName" : "Mr. Gimmick",
+      "productUri" : "mr-gimmick",
+      "wishlistHasProduct" : false
+      }, {
+      "consoleUri" : "pal-nes",
+      "hasProduct" : false,
+      "id" : "22049",
+      "price1" : "$179.17",
+      "price2" : "",
+      "price3" : "$297.93",
+      "productName" : "Little Samson",
+      "productUri" : "little-samson",
+      "wishlistHasProduct" : false
+      }, {
+      "consoleUri" : "pal-nes",
+      "hasProduct" : false,
+      "id" : "20424",
+      "price1" : "$394.04",
+      "price2" : "$1351.47",
+      "price3" : "$949.99",
+      "productName" : "Family Fun Fitness Stadium Events",
+      "productUri" : "family-fun-fitness-stadium-events",
+      "wishlistHasProduct" : false
+	  } ]
+	},{
+	  "version" : "pal",
+	  "name" : "super-nintendo",
+	  "games" : [ {
+      "consoleUri" : "pal-super-nintendo",
+      "hasProduct" : false,
+      "id" : "38872",
+      "price1" : "$33.88",
+      "price2" : "$143.64",
+      "price3" : "$84.84",
+      "productName" : "Zelda Link to the Past",
+      "productUri" : "zelda-link-to-the-past",
+      "wishlistHasProduct" : false
+      }, {
+      "consoleUri" : "pal-super-nintendo",
+      "hasProduct" : false,
+      "id" : "38957",
+      "price1" : "$34.00",
+      "price2" : "$207.89",
+      "price3" : "$186.62",
+      "productName" : "Super Metroid",
+      "productUri" : "super-metroid",
+      "wishlistHasProduct" : false
+      }, {
+      "consoleUri" : "pal-super-nintendo",
+      "hasProduct" : false,
+      "id" : "39162",
+      "price1" : "$40.84",
+      "price2" : "$214.81",
+      "price3" : "$145.89",
+      "productName" : "Mega Man X",
+      "productUri" : "mega-man-x",
+      "wishlistHasProduct" : false
+	  } ]
+	} ]
+}

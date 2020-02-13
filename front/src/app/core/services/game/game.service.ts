@@ -1,13 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+
 import { Game } from '../../../shared/models/game.model';
 
-export const GAMES: Game[] = [
-    { id: 11, name: 'Super Mario Bros', console: 'Nes'},
-    { id: 12, name: 'Zelda', console: 'Gba' },
-    { id: 13, name: 'Contra', console: 'Nes'},
-    { id: 14, name: 'Metroid', console: 'Gba' }
-  ];
+import sample from '../../../../assets/data/sample.json';
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +12,12 @@ export class GameService {
 
   constructor() { }
 
-  getGames(console): Observable<Game[]> {
-    return of(GAMES.filter(game => game.console === console));
+  findAll(): Observable<Game[]> {
+    // console.log(sample);
+    return of(sample.consoles.map(console => console.games).flat());
   }
 
-  getGame(id): Observable<Game> {
-    return of(GAMES.find(game => game.id === id));
+  find(id: number): Observable<Game> {
+    return of(sample.consoles.map(console => console.games).flat().find(game => Number(game.id) === id));
   }
 }

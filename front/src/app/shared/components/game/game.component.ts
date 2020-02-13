@@ -11,10 +11,11 @@ import { Game } from '../../models/game.model';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
+
 export class GameComponent implements OnInit {
 
-  console : Console = {id: 1, name: 'Nes'};
-  games : Game[];
+  console: Console = {id: 1, name: 'Nes'};
+  games: Game[];
   selectedGame: Game;
 
   constructor(
@@ -27,7 +28,7 @@ export class GameComponent implements OnInit {
   }
 
   getGames(): void {
-    this.console.name = '' +this.route.snapshot.paramMap.get('console');
+    this.console.name = '' + this.route.snapshot.paramMap.get('console');
 
     this.gameService.getGames(this.console.name).subscribe(games => this.games = games);
   }

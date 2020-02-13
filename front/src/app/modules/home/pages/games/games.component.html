@@ -1,0 +1,5 @@
+<p>games works!</p>
+
+<li *ngFor="let game of games">
+    <a routerLink="/game/{{game.id}}" routerLinkActive="active">{{game.productName}} - {{game.price1}}</a>
+  </li>
