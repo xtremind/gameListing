@@ -1,0 +1,13 @@
+.rcorners {
+    border-radius: 25px;
+    /*background: url(paper.gif);*/
+    border: 2px solid #73AD21;
+    background-position: left top;
+    background-repeat: repeat;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 20px; 
+    width: 200px;
+    height: 150px;  
+    float: left;
+  }
