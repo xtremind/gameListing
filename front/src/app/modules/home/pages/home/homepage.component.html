@@ -7,12 +7,18 @@
         </mat-toolbar>
 
         <mat-sidenav-container class="example-sidenav-container">
-            <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" opened><app-menu></app-menu></mat-sidenav>
-            <mat-sidenav-content><router-outlet></router-outlet></mat-sidenav-content>
+            <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" opened>
+                <app-menu></app-menu>
+            </mat-sidenav>
+            <mat-sidenav-content>
+                <router-outlet></router-outlet>
+            </mat-sidenav-content>
             <div class="clear"></div>
         </mat-sidenav-container>
 
-        <app-footer></app-footer>
+        <mat-toolbar color="secondary" class="example-toolbar">
+            <app-footer></app-footer>
+        </mat-toolbar> 
 
     </div>
 </body>

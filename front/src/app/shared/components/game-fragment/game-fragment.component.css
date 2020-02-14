@@ -14,10 +14,15 @@
 
   .example-card {
     width: 150px;
-    max-height: 320px;
+    height: 320px;
     margin-top: 10px;
     margin-left: 10px;
     float: left;
+  }
+
+  .mat-card-image{
+    width: 180px;
+    height: 240px;
   }
 
   .example-header-image {
