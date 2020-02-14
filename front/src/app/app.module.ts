@@ -1,6 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+
+import { MaterialModule } from './modules/home/components/material-module';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 
 // Pages
 import { HomepageComponent } from './modules/home/pages/home/homepage.component';
@@ -42,10 +47,16 @@ import { GameFragmentComponent } from './shared/components/game-fragment/game-fr
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule
+    ReactiveFormsModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MaterialModule
   ],
-  providers: [],
+  providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }],
   bootstrap: [HomepageComponent]
 })
 
 export class AppModule { }
+
+platformBrowserDynamic().bootstrapModule(AppModule).catch(err => console.error(err));
+

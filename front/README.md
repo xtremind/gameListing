@@ -30,3 +30,5 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 https://www.reddit.com/r/emulation/comments/830pu6/i_love_retroarchs_systematic_icons_so_made_170/
 https://itnext.io/choosing-a-highly-scalable-folder-structure-in-angular-d987de65ec7?gi=b72e9946cb65
 https://www.pricecharting.com/fr/console/pal-nes?sort=&cursor=50&format=json
+https://stackblitz.com/angular/aaapavxarnpq?file=src%2Fapp%2Fsidenav-responsive-example.html
+
