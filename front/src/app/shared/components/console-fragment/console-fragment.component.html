@@ -1,1 +1,21 @@
-<p>console-fragment works!</p>
+<a routerLink="/console/{{console.id}}" routerLinkActive="active">
+    <mat-card class="example-card" >
+        <img mat-card-image src="/assets/console/{{console.name}}.png" alt="{{console.name}}">
+        <mat-card-header>
+            <!--div mat-card-avatar class="example-header-image"></div-->
+            <mat-card-title>{{console.name}}</mat-card-title>
+            <!--mat-card-subtitle>{{game.consoleUri}}</mat-card-subtitle-->
+        </mat-card-header>
+        <!--mat-card-content>
+        <p>
+            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+            A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
+            bred for hunting.
+        </p>
+        </mat-card-content-->
+        <!--mat-card-actions>
+        <button mat-button>LIKE</button>
+        <button mat-button>SHARE</button>
+        </mat-card-actions-->
+    </mat-card>
+</a>

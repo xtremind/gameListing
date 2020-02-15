@@ -15,9 +15,6 @@
   .example-card {
     width: 150px;
     height: 320px;
-    margin-top: 10px;
-    margin-left: 10px;
-    float: left;
   }
 
   .mat-card-image{

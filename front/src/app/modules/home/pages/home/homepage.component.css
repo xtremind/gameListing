@@ -33,3 +33,7 @@ h1.example-app-name {
 .clear {
     clear:both;
 }
+
+mat-sidenav-content {
+    padding: 20px;
+}

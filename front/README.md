@@ -31,5 +31,8 @@ https://www.reddit.com/r/emulation/comments/830pu6/i_love_retroarchs_systematic_
 https://itnext.io/choosing-a-highly-scalable-folder-structure-in-angular-d987de65ec7?gi=b72e9946cb65
 https://www.pricecharting.com/fr/console/pal-nes?sort=&cursor=50&format=json
 
+https://screenscraper.fr/systemeinfos.php?plateforme=3&action=onglet&zone=systemeinfosmedias#mediazonephoto
+
 https://material.angular.io/components/categories
 https://material.io/design/color
+
