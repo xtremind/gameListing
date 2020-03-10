@@ -1,9 +1,9 @@
 <a routerLink="/console/{{console.id}}" routerLinkActive="active">
     <mat-card class="example-card" >
-        <img mat-card-image src="/assets/console/{{console.name}}.png" alt="{{console.name}}">
+        <img mat-card-image src="/assets/console/{{console.id}}.png" alt="{{console.name}}">
         <mat-card-header>
             <!--div mat-card-avatar class="example-header-image"></div-->
-            <mat-card-title>{{console.name}}</mat-card-title>
+            <mat-card-title>{{console.name | titlecase}}</mat-card-title>
             <!--mat-card-subtitle>{{game.consoleUri}}</mat-card-subtitle-->
         </mat-card-header>
         <!--mat-card-content>

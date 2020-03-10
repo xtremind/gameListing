@@ -1,7 +1,7 @@
 import { Game } from './game.model';
 
 export interface Console {
-    id: number;
+    id: string;
     name: string;
     version: string;
     games: Game[];

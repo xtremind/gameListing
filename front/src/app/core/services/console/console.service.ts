@@ -12,12 +12,17 @@ export class ConsoleService {
 
   constructor() { }
 
-  findAll(): Observable<Console[]> {
-    // console.log(sample);
-    return of(sample.consoles.map((console: Console) => ({name: console.name, version: console.version}) as Console));
+  private getSamples(): Console[] {
+    return sample.consoles.map(
+      (console: Console) => ({id: console.name, name: console.name.replace('-', ' '), version: console.version}));
   }
 
-  find(name: string): Observable<Console> {
-    return of(sample.consoles.find((console: Console) => console.name === name));
+  findAll(): Observable<Console[]> {
+    // console.log(sample);
+    return of(this.getSamples());
+  }
+
+  find(id: string): Observable<Console> {
+    return of(this.getSamples().find((console: Console) => console.id === id));
   }
 }
