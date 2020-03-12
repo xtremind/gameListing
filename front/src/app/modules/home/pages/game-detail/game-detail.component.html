@@ -1,4 +1,5 @@
-<p>game-detail works!</p>
+<!--p>game-detail works!</p>
+<img mat-card-image src="/assets/cover/{{game.productUri}}.jpg" alt="{{game.productName}}">
 {{game.id}}
 {{game.consoleUri}}
 {{game.hasProduct}}
@@ -7,4 +8,64 @@
 {{game.price3}}
 {{game.productName}}
 {{game.productUri}}
-{{game.wishlistHasProduct}}
+{{game.wishlistHasProduct}}-->
+
+<div style="display:flex">
+    <div>
+        <mat-card class="example-card" >
+            <img mat-card-image src="/assets/cover/{{game.productUri}}.jpg" alt="{{game.productName}}">    
+        </mat-card>
+    </div>
+    <div style="    margin-left: 60px;
+        padding-bottom: 20px;
+        min-width: 10%;
+        width: 100%;">
+        <div style="font-size: 24px;">{{game.productName}}</div>
+        <div style="font-size: 15px;">{{game.consoleUri}}</div>
+        <mat-divider style="margin: 24px 0;"></mat-divider>
+        <div style="
+        margin-bottom: 24px;
+        max-width: 750px;">
+            <div style="display:flex">
+                <div style="flex: 0 0 110px;">prix 1</div>
+                <div style="
+                flex: 0 0 110px;
+                text-align: right;">{{game.price1}}</div>
+            </div>
+            <div style="display:flex">
+                <div style="flex: 0 0 110px;">prix 2</div>
+                <div style="
+                flex: 0 0 110px;
+                text-align: right;">{{game.price2}}</div>
+            </div>
+            <div style="display:flex">
+                <div style="flex: 0 0 110px;">prix 3</div>
+                <div style="
+                flex: 0 0 110px;
+                text-align: right;">{{game.price2}}</div>
+            </div>
+        </div>
+        <div>
+            <div style="overflow: hidden;
+                    max-height: 75px;">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vitae gravida felis, a pulvinar odio. Fusce libero libero, aliquet quis ante nec, efficitur ultrices est. Phasellus eleifend, massa vitae fringilla ullamcorper, nisl augue lacinia nisl, a sollicitudin odio augue et libero. Mauris a vulputate lacus, nec tincidunt turpis. Ut est lorem, ullamcorper nec elit quis, viverra sagittis felis. Fusce venenatis volutpat feugiat. Vestibulum in viverra augue.
+                Etiam efficitur nulla ipsum, sit amet luctus dolor hendrerit facilisis. Proin tempus nisl ac nisi commodo viverra. Suspendisse dignissim ligula at leo maximus facilisis. Nunc efficitur erat ac fringilla lacinia. Sed blandit felis metus, eu dictum odio mollis non. Etiam lacinia nibh mauris, quis cursus lorem varius nec. Proin bibendum metus malesuada sagittis volutpat. Etiam in nibh erat. Aenean vestibulum gravida augue sed dignissim.
+            </div>
+            <button style="text-transform: uppercase;
+            font-size: 13px;
+            outline: none;
+            border: 0;
+            border-radius: 0;
+            background: none;
+            border-bottom-color:rgba(255, 255, 255, 0);
+            border-bottom-style:none;">lire plus
+            <mat-icon svgIcon="expand_more"></mat-icon>
+            <mat-icon svgIcon="expand_less"></mat-icon>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div>
+    Graphique d'évolution des prix
+</div>
