@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {DomSanitizer} from '@angular/platform-browser';
-import {MatIconRegistry} from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MatIconRegistry } from '@angular/material/icon';
+
 
 import { GameService } from '../../../../core/services/game/game.service';
 
@@ -12,9 +13,10 @@ import { Game } from '../../../../shared/models/game.model';
   templateUrl: './game-detail.component.html',
   styleUrls: ['./game-detail.component.css']
 })
-export class GameDetailComponent implements OnInit {
+export class GameDetailComponent implements OnInit, AfterContentInit {
 
   game: Game;
+  chartData = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -32,11 +34,18 @@ export class GameDetailComponent implements OnInit {
     this.getDetail();
   }
 
+  ngAfterContentInit() {
+    this.prepareChart();
+  }
+
   getDetail(): void {
     const id: number = Number(this.route.snapshot.paramMap.get('id'));
     this.gameService.find(id).subscribe(game => this.game = game);
   }
 
-  // TODO : add event listener for click on "lire plus" button
+  prepareChart(): void {
+    //
+  }
 
+  // TODO : add event listener for click on "lire plus" button
 }

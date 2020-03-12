@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
@@ -27,6 +28,7 @@ import { MenuComponent } from './core/menu/menu.component';
 // Fragments
 import { ConsoleFragmentComponent } from './shared/components/console-fragment/console-fragment.component';
 import { GameFragmentComponent } from './shared/components/game-fragment/game-fragment.component';
+import { ChartFragmentComponent } from './shared/components/chart-fragment/chart-fragment.component';
 
 
 @NgModule({
@@ -42,11 +44,13 @@ import { GameFragmentComponent } from './shared/components/game-fragment/game-fr
     MenuComponent,
     ConsoleFragmentComponent,
     GameFragmentComponent,
-    Page404Component
+    Page404Component,
+    ChartFragmentComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
