@@ -1,4 +1,9 @@
-import { Component, OnInit, Input, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ElementRef
+} from '@angular/core';
 
 import * as d3 from 'd3';
 
@@ -13,257 +18,139 @@ export class ChartFragmentComponent implements OnInit {
   hostElement; // Native element hosting the SVG container
 
   constructor(private elRef: ElementRef) {
-    this.hostElement = this.elRef.nativeElement;
+      this.hostElement = this.elRef.nativeElement;
   }
 
   ngOnInit(): void {
-    // ------------------------1. PREPARATION------------------------- //
-    // -----------------------------SVG------------------------------- //
-    const width = 960;
-    const height = 500;
-    const margin = 5;
-    const padding = 5;
-    const adj = 30;
-    // we are appending SVG first
-    const svg = d3.select(this.hostElement).select('svg')
-        .attr('preserveAspectRatio', 'xMinYMin meet')
-        .attr('viewBox', '-'
-              + adj + ' -'
-              + adj + ' '
-              + (width + adj * 3) + ' '
-              + (height + adj * 3))
-        .style('padding', padding)
-        .style('margin', margin)
-        .classed('svg-content', true);
+      const timeConv = d3.utcParse('%d/%m/%Y');
 
-    // -----------------------------DATA------------------------------ //
-    const timeConv = d3.timeParse('%d/%m/%Y');
-    /*const dataset = d3.csv('data.csv');
-    dataset.then(function(data) {
-        const slices = data.columns.slice(1).map(function(id) {
-            return {
-                id: id,
-                values: data.map(function(d){
-                    return {
-                        date: timeConv(d.date),
-                        measurement: +d[id]
-                    };
-                })
-            };
-        });
-    console.log('Column headers', data.columns);
-    console.log('Column headers without date', data.columns.slice(1));
-        */
-
-    const slices = [
-        {
-          id : 'price1',
-          values: [
-            {
-              date: timeConv('01/03/2020'),
-              price: 10
-            },
-            {
-              date: timeConv('02/03/2020'),
-              price: 12
-            },
-            {
-              date: timeConv('03/03/2020'),
-              price: 11
-            },
-            {
-              date: timeConv('04/03/2020'),
-              price: 15
-            },
-            {
-              date: timeConv('05/03/2020'),
-              price: 14
-            }
+      const data = {
+          y: 'price',
+          series: [{
+              name: 'price1',
+              values: [10, 12, 11, 15, 14]
+          }, {
+              name: 'price2',
+              values: [15, 17, 18, 20, 19]
+          }, {
+              name: 'price3',
+              values: [15, 17, 18, 20, 19]
+          }],
+          dates: [
+              timeConv('01/03/2020'),
+              timeConv('02/03/2020'),
+              timeConv('03/03/2020'),
+              timeConv('04/03/2020'),
+              timeConv('05/03/2020')
           ]
-        }, {
-          id : 'price2',
-          values: [
-            {
-              date: timeConv('01/03/2020'),
-              price: 15
-            },
-            {
-              date: timeConv('02/03/2020'),
-              price: 17
-            },
-            {
-              date: timeConv('03/03/2020'),
-              price: 18
-            },
-            {
-              date: timeConv('04/03/2020'),
-              price: 20
-            },
-            {
-              date: timeConv('05/03/2020'),
-              price: 19
-            }
-          ]
-        }, {
-          id : 'price3',
-          values: [
-            {
-              date: timeConv('01/03/2020'),
-              price: 20
-            },
-            {
-              date: timeConv('02/03/2020'),
-              price: 22
-            },
-            {
-              date: timeConv('03/03/2020'),
-              price: 21
-            },
-            {
-              date: timeConv('04/03/2020'),
-              price: 25
-            },
-            {
-              date: timeConv('05/03/2020'),
-              price: 24
-            }
-          ]
-        }];
+      };
 
-    // returns the sliced dataset
-    console.log('Slices', slices);
-    // returns the first slice
-    console.log('First slice', slices[0]);
-    // returns the array in the first slice
-    console.log('A array', slices[0].values);
-    // returns the date of the first row in the first slice
-    console.log('Date element', slices[0].values[0].date);
-    // returns the array's length
-    console.log('Array length', (slices[0].values).length);
+      const height = 600;
+      const width = 800;
+      const margin = ({
+          top: 20,
+          right: 20,
+          bottom: 30,
+          left: 30
+      });
 
-    // ----------------------------SCALES----------------------------- //
-    const xScale = d3.scaleTime().range([0, width]);
-    const yScale = d3.scaleLinear().rangeRound([height, 0]);
+      const svg = d3.select(this.hostElement).select('svg')
+          .attr('preserveAspectRatio', 'xMinYMin meet')
+          .attr('viewBox', '0 0 width height')
+          .style('overflow', 'visible');
 
-    xScale.domain(d3.extent(slices[0].values, d => d.date));
-    yScale.domain([(0), d3.max(slices, c => d3.max(c.values, d => d.price + 4))]);
+      const x = d3.scaleUtc()
+          .domain(d3.extent(data.dates))
+          .range([margin.left, width - margin.right]);
 
-    // -----------------------------AXES------------------------------ //
-    const yaxis = d3.axisLeft(yScale)
-      .ticks((slices[0].values).length);
+      const y = d3.scaleLinear()
+          .domain([0, d3.max(data.series, d => d3.max(d.values))]).nice()
+          .range([height - margin.bottom, margin.top]);
 
-    const xaxis = d3.axisBottom(xScale)
-      .ticks(d3.timeDay.every(1))
-      .tickFormat(d3.timeFormat('%b %d'));
+      const xAxis = g => g
+          .attr('transform', `translate(0,${height - margin.bottom})`)
+          .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
 
-    // ----------------------------LINES------------------------------ //
-    const line = d3.line()
-      .x( d => xScale(d.date))
-      .y( d => yScale(d.price))
-      .curve(d3.curveMonotoneX); // to curve the lines
+      const yAxis = g => g
+          .attr('transform', `translate(${margin.left},0)`)
+          .call(d3.axisLeft(y))
+          .call(g => g.select('.domain').remove())
+          .call(g => g.select('.tick:last-of-type text').clone()
+              .attr('x', 3)
+              .attr('text-anchor', 'start')
+              .attr('font-weight', 'bold')
+              .text(data.y));
 
-    let id = 0;
-    const ids = ()  => 'line-' + id++;
+      svg.append('g').call(xAxis);
 
-    // ---------------------------TOOLTIP---------------------------- //
-    const tooltip = d3.select(this.hostElement).append('div')
-      .attr('class', 'tooltip')
-      .style('opacity', 0)
-      .style('position', 'absolute');
+      svg.append('g').call(yAxis);
 
-    // -------------------------2. DRAWING---------------------------- //
-    // -----------------------------AXES------------------------------ //
-    svg.append('g')
-      .attr('class', 'axis')
-      .attr('transform', 'translate(0,' + height + ')')
-      .call(xaxis);
+      const path = svg.append('g')
+          .attr('fill', 'none')
+          .attr('stroke', 'steelblue')
+          .attr('stroke-width', 1.5)
+          .attr('stroke-linejoin', 'round')
+          .attr('stroke-linecap', 'round')
+          .selectAll('path')
+          .data(data.series)
+          .join('path')
+          .style('mix-blend-mode', 'multiply')
+          //.attr('d', d => line(d.values));
 
-    svg.append('g')
-        .attr('class', 'axis')
-        .call(yaxis)
-        .append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('dy', '.75em')
-        .attr('y', 6)
-        .style('text-anchor', 'end')
-        .text('Prix');
+      svg.call(hover, path);
 
-    // ----------------------------LINES------------------------------ //
-    const lines = svg.selectAll('lines')
-      .data(slices)
-      .enter()
-      .append('g');
+      //return svg.node();
 
-    lines.append('path')
-      .attr('class', ids)
-      .attr('fill', 'none')
-      .attr('stroke-width', 1.5)
-      .attr('stroke', 'red')
-      .attr('d', d => line(d.values));
+      function hover(svg, path) {
+          if ('ontouchstart' in document) {
+              svg
+                  .style('-webkit-tap-highlight-color', 'transparent')
+                  .on('touchmove', moved)
+                  .on('touchstart', entered)
+                  .on('touchend', left);
+          } else {
+              svg
+                  .on('mousemove', moved)
+                  .on('mouseenter', entered)
+                  .on('mouseleave', left);
+          }
 
-    lines.append('text')
-      .attr('class', 'serie_label')
-      .datum(d => {
-          return {
-              id: d.id,
-              value: d.values[d.values.length - 1]
-          };
-      })
-      .attr('transform', d => {
-          return 'translate(' + (xScale(d.value.date) + 10) +
-              ',' + (yScale(d.value.price) + 5) + ')';
-      })
-      .attr('x', 5)
-      .text(d => d.id);
-      // ---------------------------POINTS----------------------------- //
+          const dot = svg.append('g').attr('display', 'none');
 
-    lines.selectAll('points')
-      .data( d => d.values)
-      .enter()
-      .append('circle')
-      .attr('cx', d => xScale(d.date))
-      .attr('cy', d => yScale(d.price))
-      .attr('r', 1)
-      .attr('class', 'point')
-      .style('opacity', 1);
+          dot.append('circle').attr('r', 2.5);
 
-      // ---------------------------EVENTS----------------------------- //
-    lines.selectAll('circles')
-      .data( d => d.values)
-      .enter()
-      .append('circle')
-      .attr('cx', d => xScale(d.date))
-      .attr('cy', d => yScale(d.price))
-      .attr('r', 10)
-      .style('opacity', 0)
-      .on('mouseover', d => {
-          tooltip.transition()
-            .duration(200)
-            .delay(30)
-            .style('opacity', 1);
-          tooltip.html(d.price)
-            .style('left', (d3.event.pageX + 25) + 'px')
-            .style('top', (d3.event.pageY) + 'px');
-          const selection = d3.select(this).raise();
-          selection
-            .transition()
-            .delay('20')
-            .duration('200')
-            .attr('r', 6)
-            .style('opacity', 1)
-            .style('fill', '#ed3700');
-      })
-      .on('mouseout', d => {
-          tooltip.transition()
-            .duration(200)
-            .style('opacity', 0);
-          const selection = d3.select(this);
-          selection
-            .transition()
-            .delay('20')
-            .duration('200')
-            .attr('r', 10)
-            .style('opacity', 0);
-          });
+          dot.append('text')
+              .style('font', '10px sans-serif')
+              .attr('text-anchor', 'middle')
+              .attr('y', -8);
+
+          function moved() {
+              d3.event.preventDefault();
+              const ym = y.invert(d3.event.layerY);
+              const xm = x.invert(d3.event.layerX);
+              const i1 = d3.bisectLeft(data.dates, xm, 1);
+              const i0 = i1 - 1;
+              const i = ((xm.getTime() - data.dates[i0].getTime()) > (data.dates[i1].getTime() - xm.getTime())) ? i1 : i0;
+              const s = data.series.reduce((a, b) => Math.abs(a.values[i] - ym) < Math.abs(b.values[i] - ym) ? a : b);
+              path.attr('stroke', d => d === s ? null : '#ddd').filter(d => d === s).raise();
+              dot.attr('transform', `translate(${x(data.dates[i])},${y(s.values[i])})`);
+              dot.select('text').text(s.name);
+          }
+
+          function entered() {
+              path.style('mix-blend-mode', null).attr('stroke', '#ddd');
+              dot.attr('display', null);
+          }
+
+          function left() {
+              path.style('mix-blend-mode', 'multiply').attr('stroke', null);
+              dot.attr('display', 'none');
+          }
+      }
+
+      const line = d3.line()
+          //.defined(d => !isNaN(d))
+          .x((d, i) => x(data.dates[i]))
+          //.y(d => y(d));
   }
 }
