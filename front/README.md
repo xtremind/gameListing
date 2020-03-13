@@ -36,3 +36,22 @@ https://screenscraper.fr/systemeinfos.php?plateforme=3&action=onglet&zone=system
 https://material.angular.io/components/categories
 https://material.io/design/color
 
+
+
+// D3
+
+https://www.d3-graph-gallery.com/graph/line_basic.html
+https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89
+http://datawanderings.com/2019/10/28/tutorial-making-a-line-chart-in-d3-js-v-5/
+https://observablehq.com/@d3/multi-line-chart
+
+https://medium.com/better-programming/reactive-charts-in-angular-8-using-d3-4550bb0b4255
+https://github.com/mpdroid/d3-in-angular/blob/8a4e1775076247096d08a6f630335013cecd95eb/src/app/order-delivery/order-delivery.component.html
+https://github.com/mpdroid/d3-in-angular/blob/master/src/app/area-chart/area-chart.component.ts
+
+https://www.d3-graph-gallery.com/graph/line_several_group.html
+https://www.d3-graph-gallery.com/graph/line_cursor.html
+https://bl.ocks.org/d3noob/7bf95c7ac092db2fe31a979b926b91b8
+
+
+
