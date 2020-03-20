@@ -56,7 +56,7 @@ export class ChartFragmentComponent implements OnInit {
 
       const svg = d3.select(this.hostElement).select('svg')
           .attr('preserveAspectRatio', 'xMinYMin meet')
-          .attr('viewBox', '0 0 width height')
+          .attr('viewBox', '0 0 ' + width + ' ' + height)
           .style('overflow', 'visible');
 
       const x = d3.scaleUtc()
@@ -69,7 +69,9 @@ export class ChartFragmentComponent implements OnInit {
 
       const xAxis = g => g
           .attr('transform', `translate(0,${height - margin.bottom})`)
-          .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
+          .call(d3.axisBottom(x)
+            .ticks(d3.timeDay.every(1))
+            .tickFormat(d3.timeFormat('%d/%m')));
 
       const yAxis = g => g
           .attr('transform', `translate(${margin.left},0)`)
@@ -85,6 +87,10 @@ export class ChartFragmentComponent implements OnInit {
 
       svg.append('g').call(yAxis);
 
+      const line = d3.line()
+          .x((d, i) => x(data.dates[i]))
+          .y((d, i) => y(d.values[i]));
+
       const path = svg.append('g')
           .attr('fill', 'none')
           .attr('stroke', 'steelblue')
@@ -94,28 +100,26 @@ export class ChartFragmentComponent implements OnInit {
           .selectAll('path')
           .data(data.series)
           .join('path')
-          .style('mix-blend-mode', 'multiply')
-          //.attr('d', d => line(d.values));
+          .style('mix-blend-mode', 'multiply');
 
       svg.call(hover, path);
 
-      //return svg.node();
-
-      function hover(svg, path) {
+      function hover( _svg: d3.Selection<d3.BaseType, unknown, null, undefined>,
+                      _path: d3.Selection<d3.BaseType, unknown, null, undefined>) {
           if ('ontouchstart' in document) {
-              svg
+              _svg
                   .style('-webkit-tap-highlight-color', 'transparent')
                   .on('touchmove', moved)
                   .on('touchstart', entered)
                   .on('touchend', left);
           } else {
-              svg
+              _svg
                   .on('mousemove', moved)
                   .on('mouseenter', entered)
                   .on('mouseleave', left);
           }
 
-          const dot = svg.append('g').attr('display', 'none');
+          const dot = _svg.append('g').attr('display', 'none');
 
           dot.append('circle').attr('r', 2.5);
 
@@ -130,27 +134,26 @@ export class ChartFragmentComponent implements OnInit {
               const xm = x.invert(d3.event.layerX);
               const i1 = d3.bisectLeft(data.dates, xm, 1);
               const i0 = i1 - 1;
-              const i = ((xm.getTime() - data.dates[i0].getTime()) > (data.dates[i1].getTime() - xm.getTime())) ? i1 : i0;
+              const i = i1 === 5 ? i0 : (
+                    (xm.getTime() - data.dates[i0].getTime())
+                    > (data.dates[i1].getTime() - xm.getTime())
+                    ) ? i1 : i0;
               const s = data.series.reduce((a, b) => Math.abs(a.values[i] - ym) < Math.abs(b.values[i] - ym) ? a : b);
-              path.attr('stroke', d => d === s ? null : '#ddd').filter(d => d === s).raise();
+              _path.attr('stroke', d => d === s ? null : '#ddd').filter(d => d === s).raise();
               dot.attr('transform', `translate(${x(data.dates[i])},${y(s.values[i])})`);
               dot.select('text').text(s.name);
           }
 
           function entered() {
-              path.style('mix-blend-mode', null).attr('stroke', '#ddd');
+              _path.style('mix-blend-mode', null).attr('stroke', '#ddd');
               dot.attr('display', null);
           }
 
           function left() {
-              path.style('mix-blend-mode', 'multiply').attr('stroke', null);
+              _path.style('mix-blend-mode', 'multiply').attr('stroke', null);
               dot.attr('display', 'none');
           }
       }
 
-      const line = d3.line()
-          //.defined(d => !isNaN(d))
-          .x((d, i) => x(data.dates[i]))
-          //.y(d => y(d));
   }
 }
