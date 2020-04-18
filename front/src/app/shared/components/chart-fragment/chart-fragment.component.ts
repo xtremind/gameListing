@@ -244,26 +244,26 @@ export class ChartFragmentComponent implements OnInit {
           tooltip.html(d.price)
             .style('left', (d3.event.pageX + 25) + 'px')
             .style('top', (d3.event.pageY) + 'px');
-          const selection = d3.select(this).raise();
+          /*const selection = d3.select(this).raise();
           selection
             .transition()
             .delay('20')
             .duration('200')
             .attr('r', 6)
             .style('opacity', 1)
-            .style('fill', '#ed3700');
+            .style('fill', '#ed3700');*/
       })
       .on('mouseout', d => {
           tooltip.transition()
             .duration(200)
             .style('opacity', 0);
-          const selection = d3.select(this);
+         /*const selection = d3.select(this);
           selection
             .transition()
             .delay('20')
             .duration('200')
             .attr('r', 10)
             .style('opacity', 0);
-          });
+          });*/
   }
 }
