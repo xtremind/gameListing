@@ -1,9 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  ElementRef
-} from '@angular/core';
+import { Component, OnInit, Input, ElementRef } from '@angular/core';
 
 import * as d3 from 'd3';
 
@@ -18,30 +13,96 @@ export class ChartFragmentComponent implements OnInit {
   hostElement; // Native element hosting the SVG container
 
   constructor(private elRef: ElementRef) {
-      this.hostElement = this.elRef.nativeElement;
+    this.hostElement = this.elRef.nativeElement;
   }
 
   ngOnInit(): void {
-      const timeConv = d3.utcParse('%d/%m/%Y');
+    // ------------------------1. PREPARATION------------------------- //
+    // -----------------------------SVG------------------------------- //
+    const width = 960;
+    const height = 500;
+    const margin = 5;
+    const padding = 5;
+    const adj = 30;
+    // we are appending SVG first
+    const svg = d3.select(this.hostElement).select('svg')
+        .attr('preserveAspectRatio', 'xMinYMin meet')
+        .attr('viewBox', '-'
+              + adj + ' -'
+              + adj + ' '
+              + (width + adj * 3) + ' '
+              + (height + adj * 3))
+        .style('padding', padding)
+        .style('margin', margin)
+        .classed('svg-content', true);
 
-      const data = {
-          y: 'price',
-          series: [{
-              name: 'price1',
-              values: [10, 12, 11, 15, 14]
-          }, {
-              name: 'price2',
-              values: [15, 17, 18, 20, 19]
-          }, {
-              name: 'price3',
-              values: [15, 17, 18, 20, 19]
-          }],
-          dates: [
-              timeConv('01/03/2020'),
-              timeConv('02/03/2020'),
-              timeConv('03/03/2020'),
-              timeConv('04/03/2020'),
-              timeConv('05/03/2020')
+    // -----------------------------DATA------------------------------ //
+    const timeConv = d3.timeParse('%d/%m/%Y');
+    /*const dataset = d3.csv('data.csv');
+    dataset.then(function(data) {
+        const slices = data.columns.slice(1).map(function(id) {
+            return {
+                id: id,
+                values: data.map(function(d){
+                    return {
+                        date: timeConv(d.date),
+                        measurement: +d[id]
+                    };
+                })
+            };
+        });
+    console.log('Column headers', data.columns);
+    console.log('Column headers without date', data.columns.slice(1));
+        */
+
+    const slices = [
+        {
+          id : 'price1',
+          values: [
+            {
+              date: timeConv('01/03/2020'),
+              price: 10
+            },
+            {
+              date: timeConv('02/03/2020'),
+              price: 12
+            },
+            {
+              date: timeConv('03/03/2020'),
+              price: 11
+            },
+            {
+              date: timeConv('04/03/2020'),
+              price: 15
+            },
+            {
+              date: timeConv('05/03/2020'),
+              price: 14
+            }
+          ]
+        }, {
+          id : 'price2',
+          values: [
+            {
+              date: timeConv('01/03/2020'),
+              price: 15
+            },
+            {
+              date: timeConv('02/03/2020'),
+              price: 17
+            },
+            {
+              date: timeConv('03/03/2020'),
+              price: 18
+            },
+            {
+              date: timeConv('04/03/2020'),
+              price: 20
+            },
+            {
+              date: timeConv('05/03/2020'),
+              price: 19
+            }
           ]
         }, {
           id : 'price3',
@@ -97,8 +158,8 @@ export class ChartFragmentComponent implements OnInit {
 
     // ----------------------------LINES------------------------------ //
     const line = d3.line()
-      .x( d => xScale(d.date as Date))
-      .y( d => yScale(d.price as number))
+      .x( d => xScale(d.date))
+      .y( d => yScale(d.price))
       .curve(d3.curveMonotoneX); // to curve the lines
 
     let id = 0;
@@ -135,7 +196,7 @@ export class ChartFragmentComponent implements OnInit {
 
     lines.append('path')
       .attr('class', ids)
-      //.attr('fill', 'none')
+      .attr('fill', 'none')
       .attr('stroke-width', 1.5)
       .attr('stroke', 'red')
       .attr('d', d => line(d.values));
@@ -180,26 +241,27 @@ export class ChartFragmentComponent implements OnInit {
             .duration(200)
             .delay(30)
             .style('opacity', 1);
-          tooltip.html(d.price.toString())
+          tooltip.html(d.price)
             .style('left', (d3.event.pageX + 25) + 'px')
             .style('top', (d3.event.pageY) + 'px');
           /*const selection = d3.select(this).raise();
-            selection
+          selection
             .transition()
-            .delay(20)
-            .duration(200)
+            .delay('20')
+            .duration('200')
             .attr('r', 6)
             .style('opacity', 1)
             .style('fill', '#ed3700');*/
-      }).on('mouseout', d => {
+      })
+      .on('mouseout', d => {
           tooltip.transition()
             .duration(200)
             .style('opacity', 0);
           /*const selection = d3.select(this);
           selection
             .transition()
-            .delay(20)
-            .duration(200)
+            .delay('20')
+            .duration('200')
             .attr('r', 10)
             .style('opacity', 0);*/
           });
