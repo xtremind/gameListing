@@ -14,5 +14,5 @@ export class ChartFragmentComponent implements OnInit {
     this.hostElement = this.elRef.nativeElement;
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 }
