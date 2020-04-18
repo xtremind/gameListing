@@ -8,6 +8,17 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { MaterialModule } from './modules/home/components/material-module';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 
+import { FusionChartsModule } from 'angular-fusioncharts';
+
+// Import FusionCharts library and chart modules
+import * as FusionCharts from 'fusioncharts';
+import * as Charts from 'fusioncharts/fusioncharts.charts';
+import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
+import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries'; // Import timeseries
+
+// Pass the fusioncharts library and chart modules
+FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme, TimeSeries);
+
 // Pages
 import { HomepageComponent } from './modules/home/pages/home/homepage.component';
 import { DashboardComponent } from './modules/home/pages/dashboard/dashboard.component';
@@ -54,7 +65,8 @@ import { ChartFragmentComponent } from './shared/components/chart-fragment/chart
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    FusionChartsModule
   ],
   providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }],
   bootstrap: [HomepageComponent]
