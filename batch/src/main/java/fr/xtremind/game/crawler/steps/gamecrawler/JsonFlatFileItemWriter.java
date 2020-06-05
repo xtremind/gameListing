@@ -67,8 +67,8 @@ public class JsonFlatFileItemWriter<T> extends AbstractItemStreamItemWriter<T>
 					"Writer must be open before it can be written to");
 		}
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Writing to flat file with " + items.size()
+		if (logger.isInfoEnabled()) {
+			logger.info("Writing to flat file with " + items.size()
 					+ " items.");
 		}
 

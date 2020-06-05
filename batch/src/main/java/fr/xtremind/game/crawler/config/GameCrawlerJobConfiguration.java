@@ -15,6 +15,7 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -33,6 +34,7 @@ import fr.xtremind.game.crawler.steps.gamecrawler.Reader;
 
 @Configuration
 @EnableBatchProcessing
+@EnableAutoConfiguration
 public class GameCrawlerJobConfiguration {
 
 	private static final String PROPERTY_REST_API_URL = "rest.api.url";
@@ -50,7 +52,7 @@ public class GameCrawlerJobConfiguration {
 	@Autowired
 	public Environment environment;
 	
-	@Bean
+	/*@Bean
 	public RestTemplate restTemplate() {
 		RestTemplate restTemplate = new RestTemplate();
 		MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
@@ -58,7 +60,7 @@ public class GameCrawlerJobConfiguration {
 		restTemplate.getMessageConverters().add(mappingJackson2HttpMessageConverter);
 
 		return restTemplate;
-	}
+	}*/
 
     @Bean
     ItemReader<Console> gameReader() {
@@ -67,7 +69,7 @@ public class GameCrawlerJobConfiguration {
 
     @Bean
     ItemProcessor<Console, Console> gameProcessor() {
-        return new Processor(environment.getRequiredProperty(PROPERTY_REST_API_URL), restTemplate());
+        return new Processor(environment.getRequiredProperty(PROPERTY_REST_API_URL)/*, restTemplate()*/);
     }
 
     /*@Bean
@@ -109,6 +111,25 @@ public class GameCrawlerJobConfiguration {
 	@Bean
 	public Step step1() {
 		return stepBuilderFactory.get("step1").<Console, Console> chunk(1)
+				.reader(gameReader())
+				.processor(gameProcessor())
+				.writer(gameWriter())
+				.build();
+	}
+
+    @Bean
+	public Job processJob2() {
+		return jobBuilderFactory.get("processJob2")
+				.incrementer(new RunIdIncrementer())
+				.listener(listener())
+				.flow(step2())
+				.end()
+				.build();
+	}
+
+	@Bean
+	public Step step2() {
+		return stepBuilderFactory.get("step2").<Console, Console> chunk(1)
 				.reader(gameReader())
 				.processor(gameProcessor())
 				.writer(gameWriter())

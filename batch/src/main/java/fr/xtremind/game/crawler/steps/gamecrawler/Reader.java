@@ -20,8 +20,8 @@ public class Reader implements ItemReader<Console> {
 	private List<Console> consoles = new ArrayList<Console>();
 	
 	public Reader(String requiredProperty) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("construct " + requiredProperty);
+		if (logger.isInfoEnabled()) {
+			logger.info("construct " + requiredProperty);
 		}
 		this.consoles = Arrays.asList(requiredProperty.split(",")).stream().map(s -> convertTo(s)).collect(Collectors.toList());
 	}
